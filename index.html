@@ -274,6 +274,28 @@
   #report .note, #report p, #contact p { max-width: 640px; }
   .terms-list b { color: var(--text-dim); }
   .terms-updated { font-size: 0.74rem; color: var(--text-faint); margin: 14px 0 0; }
+
+  .auth-link { background: none; color: var(--text); border: 1px solid var(--border); padding: 8px 16px; font-family: var(--font); font-weight: 500; font-size: 0.78rem; cursor: pointer; white-space: nowrap; flex: none; }
+  .auth-link:hover { border-color: var(--cyan); }
+  .auth-status { font-size: 0.78rem; color: var(--text-dim); white-space: nowrap; }
+  .auth-status b { color: var(--cyan); font-weight: 600; }
+  .auth-status a { color: var(--text-faint); text-decoration: underline; text-underline-offset: 3px; margin-left: 10px; cursor: pointer; }
+
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(4,8,16,0.72); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+  .modal-backdrop.show { display: flex; }
+  .modal-box { background: var(--surface); border: 1px solid var(--border); padding: 32px; width: 100%; max-width: 380px; }
+  .modal-box h3 { margin: 0 0 20px; font-size: 1.05rem; font-weight: 600; }
+  .modal-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .modal-field label { font-size: 0.76rem; color: var(--text-dim); }
+  .modal-field input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; font-family: var(--font); font-size: 0.86rem; }
+  .modal-field input:focus-visible { outline: 1px solid var(--cyan); }
+  .modal-error { font-size: 0.78rem; color: var(--red); margin: -6px 0 14px; display: none; }
+  .modal-error.show { display: block; }
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .modal-toggle { font-size: 0.8rem; color: var(--text-faint); text-align: center; margin-top: 16px; }
+  .modal-toggle a { color: var(--cyan); text-decoration: none; cursor: pointer; }
+  .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--text-faint); font-size: 1.1rem; cursor: pointer; }
+  .modal-box { position: relative; }
 </style>
 
 <nav>
@@ -289,9 +311,30 @@
       <a href="#terms">Terms</a>
       <a href="#contact">Contact</a>
     </div>
+    <div id="auth-slot"><button class="auth-link" id="auth-open-btn" type="button">Sign in</button></div>
     <a class="nav-cta" href="#try" style="text-decoration:none; display:inline-block;">Run an audit</a>
   </div>
 </nav>
+
+<div class="modal-backdrop" id="auth-modal">
+  <div class="modal-box">
+    <button class="modal-close" id="auth-close-btn" type="button">✕</button>
+    <h3 id="auth-modal-title">Sign in</h3>
+    <div class="modal-field">
+      <label for="auth-email">Email</label>
+      <input type="email" id="auth-email" autocomplete="email">
+    </div>
+    <div class="modal-field">
+      <label for="auth-password">Password</label>
+      <input type="password" id="auth-password" autocomplete="current-password">
+    </div>
+    <p class="modal-error" id="auth-error"></p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="auth-submit-btn" type="button" style="width:100%;">Sign in</button>
+    </div>
+    <p class="modal-toggle" id="auth-toggle">Don't have an account? <a id="auth-toggle-link">Sign up</a></p>
+  </div>
+</div>
 
 <div class="wrap">
   <section class="hero" style="border-top:none;">
@@ -545,7 +588,16 @@ rsi_smooth = rsi.rolling(3, center=True).mean()"></textarea>
 </footer>
 
 <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+// Accounts, via Supabase Auth. The URL + anon key below are both public
+// by design (that's what "anon key" means) -- they can only do what the
+// database's row-level-security policies allow, which is a signed-in
+// user reading/updating their own profile row and nothing else.
+var SUPABASE_URL = 'https://uzwlvfdenzegidffngue.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6d2x2ZmRlbnplZ2lkZmZuZ3VlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNjkxNTMsImV4cCI6MjEwMzY0NTE1M30.WYqVs9PC2n0sZ1c-VWibOejkEls-5Ak-8hL1Mp1gBzM';
+var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 (function() {
   // Real payment checkout via Paddle. The token below is a public,
   // client-side token (safe to expose in page source) -- it can only
@@ -563,13 +615,99 @@ rsi_smooth = rsi.rolling(3, center=True).mean()"></textarea>
   function wireCheckout(id, priceId) {
     var el = document.getElementById(id);
     if (!el) return;
-    el.addEventListener('click', function(e) {
+    el.addEventListener('click', async function(e) {
       e.preventDefault();
-      Paddle.Checkout.open({ items: [{ priceId: priceId, quantity: 1 }] });
+      var { data } = await sb.auth.getSession();
+      var session = data && data.session;
+      if (!session) {
+        openAuthModal('login');
+        alert('Sign in (or create a free account) first, then click this button again to check out.');
+        return;
+      }
+      Paddle.Checkout.open({
+        items: [{ priceId: priceId, quantity: 1 }],
+        customer: { email: session.user.email },
+        customData: { user_id: session.user.id }
+      });
     });
   }
   wireCheckout('buy-monthly', PRICE_IDS.monthly);
   wireCheckout('buy-fivepack', PRICE_IDS.fivepack);
+})();
+
+// --- Auth modal: sign in / sign up / sign out ------------------------
+var authMode = 'login';
+
+function openAuthModal(mode) {
+  authMode = mode || 'login';
+  document.getElementById('auth-error').classList.remove('show');
+  document.getElementById('auth-modal-title').textContent = authMode === 'signup' ? 'Create your account' : 'Sign in';
+  document.getElementById('auth-submit-btn').textContent = authMode === 'signup' ? 'Sign up' : 'Sign in';
+  document.getElementById('auth-toggle').innerHTML = authMode === 'signup'
+    ? 'Already have an account? <a id="auth-toggle-link">Sign in</a>'
+    : "Don't have an account? <a id=\"auth-toggle-link\">Sign up</a>";
+  document.getElementById('auth-toggle-link').addEventListener('click', function() {
+    openAuthModal(authMode === 'signup' ? 'login' : 'signup');
+  });
+  document.getElementById('auth-modal').classList.add('show');
+}
+function closeAuthModal() {
+  document.getElementById('auth-modal').classList.remove('show');
+}
+
+async function refreshAuthUI() {
+  var { data } = await sb.auth.getSession();
+  var session = data && data.session;
+  var slot = document.getElementById('auth-slot');
+  if (session) {
+    slot.innerHTML = '<span class="auth-status">' + session.user.email + '<a id="auth-signout-link">Sign out</a></span>';
+    document.getElementById('auth-signout-link').addEventListener('click', async function() {
+      await sb.auth.signOut();
+      refreshAuthUI();
+    });
+  } else {
+    slot.innerHTML = '<button class="auth-link" id="auth-open-btn" type="button">Sign in</button>';
+    document.getElementById('auth-open-btn').addEventListener('click', function() { openAuthModal('login'); });
+  }
+}
+
+(function() {
+  document.getElementById('auth-close-btn').addEventListener('click', closeAuthModal);
+  document.getElementById('auth-modal').addEventListener('click', function(e) {
+    if (e.target.id === 'auth-modal') closeAuthModal();
+  });
+  document.getElementById('auth-toggle-link').addEventListener('click', function() {
+    openAuthModal(authMode === 'signup' ? 'login' : 'signup');
+  });
+
+  document.getElementById('auth-submit-btn').addEventListener('click', async function() {
+    var email = document.getElementById('auth-email').value.trim();
+    var password = document.getElementById('auth-password').value;
+    var errEl = document.getElementById('auth-error');
+    errEl.classList.remove('show');
+    if (!email || !password) {
+      errEl.textContent = 'Enter both an email and a password.';
+      errEl.classList.add('show');
+      return;
+    }
+    var result = authMode === 'signup'
+      ? await sb.auth.signUp({ email: email, password: password })
+      : await sb.auth.signInWithPassword({ email: email, password: password });
+    if (result.error) {
+      errEl.textContent = result.error.message;
+      errEl.classList.add('show');
+      return;
+    }
+    if (authMode === 'signup' && !result.data.session) {
+      errEl.textContent = 'Check your email to confirm your account, then sign in.';
+      errEl.classList.add('show');
+      return;
+    }
+    closeAuthModal();
+    refreshAuthUI();
+  });
+
+  refreshAuthUI();
 })();
 
 (function() {
