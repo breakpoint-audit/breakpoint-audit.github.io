@@ -273,6 +273,7 @@
   .terms-list li:first-child { border-top: none; padding-top: 0; }
   #report .note, #report p, #contact p { max-width: 640px; }
   .terms-list b { color: var(--text-dim); }
+  .terms-updated { font-size: 0.74rem; color: var(--text-faint); margin: 14px 0 0; }
 </style>
 
 <nav>
@@ -491,14 +492,42 @@ rsi_smooth = rsi.rolling(3, center=True).mean()"></textarea>
   </section>
 
   <section id="terms">
-    <h2>Terms, in plain language.</h2>
+    <h2>Terms of Service, in plain language.</h2>
     <ul class="terms-list">
-      <li><b>We never touch your money.</b> This product doesn't request exchange API keys, hold funds, or execute trades. It's a code-verification protocol, not a broker or fund manager.</li>
-      <li><b>Your code runs in isolation, never shared or sold.</b> Submitted strategies and their results are retained so we can show you your own history and improve our checks over time — we never share, sell, or expose your code to anyone else.</li>
-      <li><b>Refunds:</b> if a paid audit fails to run due to an error on our side, you get a free re-run or your money back — no questions asked.</li>
-      <li><b>Cancel anytime.</b> The monthly plan has no lock-in; cancelling stops the next charge, nothing more.</li>
-      <li><b>An audit is a diagnostic, not a guarantee.</b> A "passed" result means a strategy held up against our checks — it does not promise future profit. Markets change; nothing here is investment advice.</li>
+      <li><b>We never touch your money.</b> This product doesn't request exchange API keys, hold funds, or execute trades. It's a code-verification protocol, not a broker, fund manager, or financial adviser.</li>
+      <li><b>What you're buying.</b> Access to automated audits of trading-strategy source code you submit, run against our verification engine, delivered as a written report. The free tier includes one audit; paid plans (monthly subscription or one-time pack) include more, as described on the Pricing section.</li>
+      <li><b>Your code runs in isolation, never shared or sold.</b> Submitted strategies and their results are retained per our Privacy Policy so we can show you your own history and improve our checks over time — we never share, sell, or expose your code to anyone else.</li>
+      <li><b>Cancel anytime.</b> The monthly plan has no lock-in; cancelling stops the next charge, nothing more. See our Refund Policy for what happens to the current period.</li>
+      <li><b>An audit is a diagnostic, not a guarantee.</b> A "passed" result means a strategy held up against our checks — it does not promise future profit or safety. Markets change; nothing here is investment advice, and using a "verified" strategy live is entirely your own decision and risk.</li>
+      <li><b>Acceptable use.</b> Don't submit code you don't have the right to submit, don't attempt to abuse, overload, or reverse-engineer the audit system, and don't submit malicious code intended to attack the service itself.</li>
+      <li><b>Changes.</b> We may update these terms as the product evolves; material changes will be reflected on this page with an updated date.</li>
     </ul>
+    <p class="terms-updated">Last updated: August 31, 2026.</p>
+  </section>
+
+  <section id="privacy">
+    <h2>Privacy Policy.</h2>
+    <ul class="terms-list">
+      <li><b>What we collect.</b> Your email (only if you create an account), the strategy source code you submit for audit, and the resulting audit reports/metadata.</li>
+      <li><b>How submitted code is used.</b> Your code is run through our automated audit engine, which includes sending it to a third-party AI provider (Anthropic) to help classify and extract the strategy logic for testing. It is never sold, and never shown to any other user.</li>
+      <li><b>Retention.</b> If your strategy passes verification, we retain the source code so you can access your own history and so we can show a track record. If it fails or is flagged, the code is held in a short-lived review queue (typically 14 days) and then permanently deleted — only an abstracted, non-proprietary pattern (never your actual code) is kept to improve future checks.</li>
+      <li><b>Payment data.</b> Payments are processed entirely by Paddle.com, acting as merchant of record. We never see or store your full card number — Paddle handles that, and their own privacy policy applies to that data.</li>
+      <li><b>Third parties.</b> We use Anthropic (AI processing), Supabase (database hosting), and Paddle (payments) as service providers. None of them are permitted to use your data for their own purposes beyond providing their service to us.</li>
+      <li><b>Your rights.</b> You can request a copy of your data or request deletion of your account and associated data at any time — contact us below.</li>
+    </ul>
+    <p class="terms-updated">Last updated: August 31, 2026.</p>
+  </section>
+
+  <section id="refund-policy">
+    <h2>Refund Policy.</h2>
+    <ul class="terms-list">
+      <li><b>Service failures:</b> if a paid audit fails to run due to an error on our side, you get a free re-run or a full refund for that audit — no questions asked.</li>
+      <li><b>Monthly subscription:</b> you can cancel anytime to stop the next charge. The current billing period you've already paid for remains active until it ends; we don't provide partial refunds for unused days within an already-paid period, except in cases of a service failure as above.</li>
+      <li><b>One-time audit packs:</b> unused audits in a pack don't expire, so refunds are only issued if a purchase was made in error and no audits from that pack have been used yet — contact us within 14 days of purchase.</li>
+      <li><b>Disagreeing with a result:</b> a refund is not available simply because you disagree with an audit's verdict — the audit ran correctly is the relevant standard, not whether you liked the outcome. If you believe an audit produced a genuinely incorrect result, contact us and we'll investigate.</li>
+      <li><b>How to request one:</b> email us (link below) with your account email and the audit/order in question.</li>
+    </ul>
+    <p class="terms-updated">Last updated: August 31, 2026.</p>
   </section>
 
   <section id="contact">
