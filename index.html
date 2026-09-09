@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Breakpoint</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,9 +14,9 @@
     --text-faint: #565D72;
     --red: #FF3B30;
     --green: #34C077;
-    --cyan: #2FC4DE;
-    --cyan-dark: #23A5BC;
-    --cyan-soft: #2FC4DE1a;
+    --cyan: #5B7FFF;
+    --cyan-dark: #4863E0;
+    --cyan-soft: #5B7FFF1a;
     --border: #1D2333;
     --font: 'Geist Mono', 'SF Mono', Consolas, monospace;
     --font-display: 'Geist', -apple-system, 'Segoe UI', sans-serif;
@@ -39,11 +40,12 @@
   a { color: inherit; }
   ::selection { background: var(--cyan); color: #04141A; }
   :focus-visible { outline: 1px solid var(--cyan); outline-offset: 3px; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
 
   nav { padding: 26px 0; }
-  .nav-inner { max-width: 720px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; }
-  .brand { text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+  .nav-inner { max-width: 1060px; margin: 0 auto; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; }
+  .brand-icon { width: 24px; height: 24px; color: var(--cyan); flex: none; }
   .brand span { color: var(--cyan); }
   .status-chip {
     font-family: var(--font); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
@@ -51,120 +53,197 @@
     display: flex; align-items: center; gap: 7px;
   }
   .status-chip i { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); flex: none; animation: pulse 1.6s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
   @media (prefers-reduced-motion: reduce) { .status-chip i { animation: none; } }
 
-  .hero { padding: 54px 0 12px; text-align: center; }
+  .hero-top { position: relative; overflow: hidden; padding: 36px 0 0; text-align: center; max-width: 720px; margin: 0 auto; }
   .kicker {
     font-family: var(--font); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--text-faint); margin: 0 0 20px; font-weight: 500;
   }
   .kicker b { color: var(--cyan); font-weight: 500; }
   h1 {
-    font-family: var(--font-display); font-weight: 700; font-size: clamp(2.2rem, 6vw, 3.1rem);
-    line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 20px; text-wrap: balance;
+    font-family: var(--font-display); font-weight: 700; font-size: clamp(2.3rem, 6vw, 3.4rem);
+    line-height: 1.05; letter-spacing: -0.03em; margin: 0 0 18px; text-wrap: balance;
   }
   h1 .accent { color: var(--cyan); }
-  .lede {
-    font-size: 1.02rem; color: var(--text-dim); line-height: 1.7; max-width: 480px;
-    margin: 0 auto 34px;
-  }
+  .lede { font-size: 1.1rem; color: var(--text); opacity: 0.88; line-height: 1.75; letter-spacing: 0.01em; margin: 26px auto 0; max-width: 48ch; }
 
-  form.join { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+  .showcase-wrap { padding: 40px 0 0; display: flex; justify-content: center; }
+  .scope-3d { width: 100%; max-width: 640px; }
+
+  .cta-section { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 44px 0 0; }
+
+  form.join { display: flex; gap: 10px; max-width: 420px; width: 100%; flex-wrap: wrap; justify-content: center; }
   .email-input {
-    flex: 1 1 240px; background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    flex: 1 1 200px; background: var(--surface); border: 1px solid var(--border); color: var(--text);
     padding: 14px 16px; font-family: var(--font); font-size: 0.9rem; border-radius: 999px;
   }
   .email-input::placeholder { color: var(--text-faint); }
   .email-input:focus-visible { outline: 1px solid var(--cyan); outline-offset: 2px; }
   .join-btn {
-    flex: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; border: none;
-    background: linear-gradient(180deg, #1B2130 0%, #0B0E17 100%); border: 1px solid #2A3245; color: var(--text);
-    font-family: var(--font); font-weight: 600; font-size: 0.88rem; padding: 14px 26px; border-radius: 999px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.5), 0 16px 32px -16px rgba(0,0,0,0.7);
-    transition: transform 0.15s cubic-bezier(.2,.8,.2,1), border-color 0.15s ease;
+    flex: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    background: #F4F6FB; border: none; color: #0A0E1B;
+    font-family: var(--font); font-weight: 700; font-size: 0.87rem; padding: 14px 24px; border-radius: 999px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15), 0 16px 32px -16px rgba(0,0,0,0.6);
+    transition: transform 0.15s cubic-bezier(.2,.8,.2,1), box-shadow 0.15s ease, background 0.15s ease;
   }
-  .join-btn:hover { border-color: color-mix(in srgb, var(--cyan) 55%, #2A3245); transform: translateY(-2px); }
+  .join-btn:hover { background: #ffffff; transform: translateY(-2px); box-shadow: 0 1px 2px rgba(0,0,0,0.15), 0 20px 40px -16px rgba(0,0,0,0.65); }
   .join-btn:active { transform: translateY(0); }
   .join-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
   .join-btn svg { width: 15px; height: 15px; }
 
-  .form-msg { text-align: center; font-size: 0.84rem; margin: 14px 0 0; min-height: 1.4em; }
+  .form-msg { font-size: 0.82rem; margin: 12px 0 0; min-height: 1.3em; }
   .form-msg.err { color: var(--red); }
   .form-msg.ok { color: var(--green); }
+  .perk-note {
+    font-family: var(--font); font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 600; margin: 0 0 18px;
+  }
+  .perk-note .accent { color: var(--cyan); }
 
-  .trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; margin: 26px 0 0; }
-  .trust-badge { display: flex; align-items: center; gap: 7px; font-family: var(--font); font-size: 0.78rem; color: var(--text-dim); }
-  .trust-badge svg { width: 13px; height: 13px; color: var(--green); flex: none; }
+  /* ---------- SCOPE (scan demo, reused from the main site) ---------- */
+  .scope-3d { perspective: 1600px; }
+  .scope {
+    position: relative; background: linear-gradient(180deg, #10151F 0%, #080B14 68%);
+    border: 1px solid var(--border); overflow: hidden;
+    transform: rotateY(-7deg) rotateX(2deg);
+    box-shadow:
+      0 2px 0 rgba(255,255,255,0.04) inset,
+      36px 44px 70px -30px rgba(0,0,0,0.75),
+      70px 60px 110px -40px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(255,255,255,0.02);
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+  }
+  .scope-3d:hover .scope { transform: rotateY(-3deg) rotateX(1deg); }
+  @media (max-width: 900px) { .scope { transform: none; } .scope-3d:hover .scope { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .scope { transition: none; } }
+  .scope::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--cyan), transparent); z-index: 3; }
+  .scope-code { position: relative; height: 400px; font-size: 0.79rem; line-height: 1.55; overflow: hidden; }
+  .scope-lines { position: absolute; left: 0; right: 0; top: 0; padding: 56px 22px 260px; will-change: transform; }
+  .scope-lines.scrolling { transition: transform 0.85s cubic-bezier(.16,.84,.44,1); }
+  @media (prefers-reduced-motion: reduce) { .scope-lines.scrolling { transition: transform 0.15s linear; } }
+  .code-line { display: flex; align-items: center; gap: 16px; white-space: pre; color: #7C84A0; padding: 2px 10px; margin: 0 -10px; border-radius: 3px; transition: background 0.35s ease, color 0.35s ease, opacity 0.35s ease, transform 0.35s ease; }
+  .code-line .ln { color: #3E4763; flex: none; width: 2.2ch; text-align: right; }
+  .code-line .code { color: #D2D7E6; }
+  .code-line .flag { position: relative; display: flex; align-items: center; margin-left: auto; opacity: 0; transform: scale(0.6); transition: opacity 0.25s ease, transform 0.25s ease; }
+  .code-line .flag svg { width: 15px; height: 15px; color: var(--red); position: relative; z-index: 1; }
+  .code-line .flag::after { content: ""; position: absolute; inset: -7px; border-radius: 50%; border: 1.5px solid var(--red); opacity: 0; }
+  .code-line.flagged .flag::after { animation: flagPing 0.7s ease-out 0.12s; }
+  @keyframes flagPing { 0% { transform: scale(0.5); opacity: 0.9; } 100% { transform: scale(2.1); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .code-line.flagged .flag::after { animation: none; } }
+  .code-line.flagged { background: rgba(255,59,48,0.14); color: var(--red); animation: punch 0.4s ease; }
+  .code-line.flagged .code { color: var(--red); }
+  .code-line.flagged .flag { opacity: 1; transform: scale(1); }
+  .code-line.dim { opacity: 0.16; }
+  @keyframes punch { 0% { transform: scale(1); } 35% { transform: scale(1.03); } 100% { transform: scale(1); } }
+  .scan-beam {
+    position: absolute; left: 0; right: 0; top: 50%; height: 27px; z-index: 1; transform: translateY(-50%);
+    border-top: 1px solid color-mix(in srgb, var(--cyan) 30%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--cyan) 30%, transparent);
+    background: color-mix(in srgb, var(--cyan) 6%, transparent);
+  }
+  .scan-beam::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--cyan); box-shadow: 0 0 7px 1px color-mix(in srgb, var(--cyan) 65%, transparent);
+  }
+  .scope-fade { position: absolute; left: 0; right: 0; height: 60px; z-index: 2; pointer-events: none; }
+  .scope-fade.top { top: 0; background: linear-gradient(180deg, #10151F 30%, transparent); }
+  .scope-fade.bottom { bottom: 0; background: linear-gradient(0deg, #080B14 30%, transparent); }
+  .scope-detail {
+    position: absolute; left: 22px; right: 22px; z-index: 2;
+    padding: 12px 14px; background: #1A0F10; border-left: 2px solid var(--red);
+    box-shadow: 0 0 0 1px rgba(255,59,48,0.18), 0 10px 24px -10px rgba(0,0,0,0.6);
+    font-size: 0.76rem; line-height: 1.55; color: var(--text-dim);
+    opacity: 0; transform: translateY(8px); pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .scope-detail.show { opacity: 1; transform: translateY(0); }
+  .scope-detail b { color: var(--red); }
+  @media (max-width: 480px) { .scope-code { font-size: 0.7rem; } .scope-lines { padding-left: 14px; padding-right: 14px; } .code-line { gap: 10px; } }
+  .scope-top {
+    position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between;
+    padding: 14px 18px; font-size: 0.72rem; color: #8891A8; z-index: 2;
+    background: #0B0F18; border-bottom: 1px solid var(--border);
+  }
+  .scope-top .live { display: flex; align-items: center; gap: 7px; }
+  .scope-top .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse2 1.5s ease-in-out infinite; }
+  @keyframes pulse2 { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+  .scope-bottom {
+    position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: baseline;
+    padding: 14px 18px; z-index: 2;
+    background: #0B0F18; border-top: 1px solid var(--border);
+  }
+  .scope-status { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.02em; font-variant-numeric: tabular-nums; }
+  .scope-dd { font-size: 0.75rem; color: #8891A8; font-variant-numeric: tabular-nums; }
+  .scope-dd.tick { animation: ddTick 0.22s ease; }
+  @keyframes ddTick { 0% { opacity: 0.35; transform: translateY(-1px); } 100% { opacity: 1; transform: translateY(0); } }
+  .code-line.scanned:not(.flagged) { animation: lineScan 0.3s ease; }
+  @keyframes lineScan { 0% { background: color-mix(in srgb, var(--cyan) 13%, transparent); } 100% { background: transparent; } }
+  @media (prefers-reduced-motion: reduce) { .scope-dd.tick, .code-line.scanned, .scope-top .dot { animation: none; } }
 
-  /* ---------- PROOF CHART (reused visual language) ---------- */
-  .proof-wrap { padding: 56px 0 8px; }
-  .proof-chart-wrap { border: 1px solid var(--border); background: var(--surface); padding: 22px 20px 14px; }
-  .proof-chart { width: 100%; height: auto; display: block; }
-  .grid-line { stroke: var(--border); stroke-width: 1; }
-  .divergence-line { stroke: var(--text-faint); stroke-width: 1; stroke-dasharray: 3 4; }
-  .chart-label { fill: var(--text-faint); font-family: var(--font); font-size: 9px; letter-spacing: 0.06em; }
-  .chart-path { fill: none; stroke-width: 2.5; stroke-linecap: round; }
-  .chart-path.claimed { stroke: var(--text-faint); stroke-dasharray: 5 5; }
-  .chart-path.real { stroke: var(--red); }
-  .proof-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 12px; font-family: var(--font); font-size: 0.74rem; color: var(--text-dim); }
-  .legend-item { display: flex; align-items: center; gap: 8px; }
-  .legend-item i { width: 14px; height: 2px; display: inline-block; flex: none; }
-  .legend-item.claimed i { background-image: repeating-linear-gradient(90deg, var(--text-faint) 0 4px, transparent 4px 8px); }
-  .legend-item.real i { background: var(--red); }
-  .proof-caption { text-align: center; font-size: 0.82rem; color: var(--text-faint); max-width: 440px; margin: 18px auto 0; }
-
-  footer { padding: 40px 0 34px; text-align: center; }
-  .footer-inner { font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.02em; }
+  footer { padding: 44px 0 34px; text-align: center; }
+  .footer-inner { font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.02em; text-wrap: balance; }
+  @media (max-width: 480px) { .footer-inner { font-size: 0.62rem; } }
 </style>
 
 <nav>
   <div class="nav-inner">
-    <a class="brand" href="#">Break<span>point</span></a>
+    <a class="brand" href="#">
+      <svg class="brand-icon" viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg">
+        <rect width="168" height="168" rx="37" fill="#12151F"/>
+        <line x1="84" y1="44" x2="84" y2="124" stroke="#3E4763" stroke-width="6" stroke-linecap="round"/>
+        <line x1="100" y1="61" x2="131" y2="61" stroke="#2A3245" stroke-width="8" stroke-linecap="round"/>
+        <line x1="100" y1="84" x2="124" y2="84" stroke="currentColor" stroke-width="8" stroke-linecap="round"/>
+        <line x1="100" y1="107" x2="135" y2="107" stroke="#2A3245" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="84" cy="84" r="14" fill="none" stroke="currentColor" stroke-width="4" opacity="0.45"/>
+        <circle cx="84" cy="84" r="9" fill="currentColor"/>
+      </svg>
+      Break<span>point</span>
+    </a>
     <span class="status-chip"><i></i>In private beta</span>
   </div>
 </nav>
 
 <div class="wrap">
-  <section class="hero">
+  <section class="hero-top">
     <p class="kicker">Quant-grade verification <b>protocol</b></p>
-    <h1>No score <span class="accent">until it's audited.</span></h1>
-    <p class="lede">Breakpoint automatically audits trading-bot code and backtests for lookahead bias, overfitting, and unrealistic execution — before you find out live. We're finishing the last of the engine now. Get on the list to be first in when it opens.</p>
+    <h1>The final audit. <span class="accent">No shortcuts.</span></h1>
+    <p class="lede">An independent, deterministic audit of your strategy's code and logic — the kind of rigor no manual review can replicate.</p>
+  </section>
 
+  <section class="showcase-wrap">
+    <div class="scope-3d">
+      <div class="scope">
+        <div class="scope-top">
+          <span class="live"><span class="dot"></span>AUDITING — LIVE</span>
+          <span>momentum_scalper_v2.py</span>
+        </div>
+        <div class="scope-code" id="scope-code">
+          <div class="scan-beam" id="scan-beam"></div>
+          <div class="scope-lines" id="scope-lines"></div>
+          <div class="scope-fade top"></div>
+          <div class="scope-fade bottom"></div>
+          <div class="scope-detail" id="scope-detail"><b>Lookahead bias —</b> line 48 pulls tomorrow's High into today's signal. That price doesn't exist yet on a live account.</div>
+        </div>
+        <div class="scope-bottom">
+          <span class="scope-status" id="scope-status" style="color:#7C84A0;">SCANNING…</span>
+          <span class="scope-dd" id="scope-dd">CHECK 1 / 118</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <p class="perk-note">Free at launch <span class="accent">— waitlist only</span></p>
     <form class="join" id="join-form">
-      <input class="email-input" id="join-email" type="email" placeholder="you@domain.com" autocomplete="email" required>
+      <input class="email-input" id="join-email" type="email" placeholder="Email" autocomplete="email" required>
       <button class="join-btn" type="submit" id="join-btn">
-        Join the waitlist
+        Request access
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </button>
     </form>
     <p class="form-msg" id="join-msg"></p>
-
-    <div class="trust-row">
-      <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Never touches your funds</span>
-      <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No exchange keys, ever</span>
-      <span class="trust-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>No spam, one email at launch</span>
-    </div>
-  </section>
-
-  <section class="proof-wrap">
-    <div class="proof-chart-wrap">
-      <svg class="proof-chart" viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="Equity curve chart comparing a claimed backtest against the same strategy re-run without lookahead bias">
-        <line x1="20" y1="40" x2="620" y2="40" class="grid-line"></line>
-        <line x1="20" y1="90" x2="620" y2="90" class="grid-line"></line>
-        <line x1="20" y1="140" x2="620" y2="140" class="grid-line"></line>
-        <line x1="20" y1="190" x2="620" y2="190" class="grid-line"></line>
-        <line x1="262" y1="14" x2="262" y2="202" class="divergence-line"></line>
-        <text x="270" y="26" class="chart-label">MAR 2020 CRASH WINDOW</text>
-        <path id="claimed-path" class="chart-path claimed" d="M20,175 C110,154 170,131 262,94 C 340,64 470,38 620,20"></path>
-        <path id="real-path" class="chart-path real" d="M20,175 C110,154 170,131 262,94 C 300,118 322,162 352,185 C 400,199 468,161 520,172 C 560,181 592,188 620,194"></path>
-      </svg>
-      <div class="proof-legend">
-        <span class="legend-item claimed"><i></i>Backtest as submitted</span>
-        <span class="legend-item real"><i></i>Re-run, bias removed</span>
-      </div>
-    </div>
-    <p class="proof-caption">Same strategy, same window. This is what the audit is actually built to catch — not a hypothetical.</p>
   </section>
 </div>
 
@@ -217,5 +296,150 @@
       }
     });
   });
+})();
+
+// --- Scan demo, reused verbatim from the main site ---------------------
+(function() {
+  var codeBox = document.getElementById('scope-code');
+  var linesWrap = document.getElementById('scope-lines');
+  if (!codeBox || !linesWrap) return;
+  var detail = document.getElementById('scope-detail');
+  var statusEl = document.getElementById('scope-status');
+  var ddEl = document.getElementById('scope-dd');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var CODE = [
+    "import pandas as pd", "import numpy as np", "",
+    "from dataclasses import dataclass", "",
+    "@dataclass", "class Params:", "    fast: int = 8", "    slow: int = 21",
+    "    rsi_period: int = 14", "    atr_period: int = 14", "    risk_pct: float = 0.01", "",
+    "def compute_ema(series, span):", "    return series.ewm(span=span, adjust=False).mean()", "",
+    "def compute_rsi(close, period=14):", "    delta = close.diff()",
+    "    up = delta.clip(lower=0).rolling(period).mean()",
+    "    down = (-delta.clip(upper=0)).rolling(period).mean()",
+    "    rs = up / down.replace(0, np.nan)", "    return 100 - (100 / (1 + rs))", "",
+    "def compute_atr(df, period=14):", "    high, low, close = df['High'], df['Low'], df['Close']",
+    "    prev_close = close.shift()", "    tr = pd.concat([",
+    "        high - low,", "        (high - prev_close).abs(),",
+    "        (low - prev_close).abs(),", "    ], axis=1).max(axis=1)",
+    "    return tr.rolling(period).mean()", "",
+    "def regime_filter(close, window=50):", "    sma = close.rolling(window).mean()",
+    "    return close > sma", "",
+    "def size_position(vol, close, risk_pct=0.01):", "    stop_dist = vol * 2",
+    "    return (close * risk_pct) / stop_dist.clip(lower=1e-6)", "",
+    "def generate_signals(df, p=Params()):", "    close = df['Close']",
+    "    fast_ema = compute_ema(close, p.fast)", "    slow_ema = compute_ema(close, p.slow)",
+    "    mom = close.pct_change(5)", "    vol = close.pct_change().rolling(20).std()",
+    "    future_high = df['High'].shift(-3)",
+    "    bull = regime_filter(close)",
+    "    signal = (fast_ema>slow_ema) & (mom>0) & bull",
+    "    size = size_position(vol, close, p.risk_pct)", "    return signal, size"
+  ];
+  var FLAG_IDX = 47;
+  var TOTAL_CHECKS = 118;
+
+  var lineEls = CODE.map(function(text, idx) {
+    var el = document.createElement('div');
+    el.className = 'code-line';
+    if (idx === FLAG_IDX) el.id = 'flag-line';
+    var lnNum = idx + 1;
+    var flagHTML = idx === FLAG_IDX
+      ? '<span class="flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"/><circle cx="12" cy="12" r="9"/><path d="M12 16.5v.01"/></svg></span>'
+      : '';
+    el.innerHTML = '<span class="ln">' + lnNum + '</span><span class="code"></span>' + flagHTML;
+    el.querySelector('.code').textContent = text;
+    return el;
+  });
+  lineEls.forEach(function(el) { linesWrap.appendChild(el); });
+  var flagLine = document.getElementById('flag-line');
+
+  function setStatus(text, color) {
+    if (!statusEl) return;
+    statusEl.textContent = text;
+    statusEl.style.color = color;
+  }
+
+  function setCheckCount(n, flash) {
+    if (!ddEl) return;
+    ddEl.textContent = 'CHECK ' + n + ' / ' + TOTAL_CHECKS;
+    if (flash) {
+      ddEl.classList.remove('tick');
+      void ddEl.offsetWidth;
+      ddEl.classList.add('tick');
+    }
+  }
+
+  function positionDetail() {
+    var top = flagLine.offsetTop + scrollTarget() + flagLine.offsetHeight + 10;
+    detail.style.top = Math.min(top, codeBox.clientHeight - 90) + 'px';
+  }
+
+  function scrollTarget() {
+    var headY = codeBox.clientHeight / 2;
+    return headY - (flagLine.offsetTop + flagLine.offsetHeight / 2);
+  }
+
+  function showFlagged() {
+    lineEls.forEach(function(l) { if (l !== flagLine) l.classList.add('dim'); });
+    flagLine.classList.add('flagged');
+    setStatus('ISSUE FOUND', 'var(--red)');
+    setCheckCount(TOTAL_CHECKS, true);
+    positionDetail();
+    detail.classList.add('show');
+  }
+
+  function showSummary() {
+    detail.classList.remove('show');
+    setStatus('SCAN COMPLETE', 'var(--text-dim)');
+    if (ddEl) ddEl.textContent = '117 / 118 CLEAN · 1 CRITICAL';
+  }
+
+  function resetForNextPass() {
+    lineEls.forEach(function(l) { l.classList.remove('flagged', 'dim'); });
+    linesWrap.classList.remove('scrolling');
+    linesWrap.style.transform = 'translateY(0)';
+  }
+
+  if (reduced) {
+    linesWrap.style.transform = 'translateY(' + scrollTarget() + 'px)';
+    showFlagged();
+    return;
+  }
+
+  var SCROLL_MS = 820, COUNT_MS = 700, DISSECT_DELAY = 140, PAUSE_MS = 1900, SUMMARY_MS = 1300, BOOT_MS = 300;
+
+  function animateCount(from, to, duration) {
+    var start = performance.now();
+    function frame(now) {
+      var t = Math.min(1, (now - start) / duration);
+      var eased = 1 - Math.pow(1 - t, 2);
+      setCheckCount(Math.round(from + (to - from) * eased), true);
+      if (t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function run() {
+    resetForNextPass();
+    setStatus('INITIALIZING…', '#7C84A0');
+    setCheckCount(0, false);
+
+    setTimeout(function() {
+      setStatus('SCANNING…', '#7C84A0');
+      void linesWrap.offsetWidth;
+      linesWrap.classList.add('scrolling');
+      linesWrap.style.transform = 'translateY(' + scrollTarget() + 'px)';
+      animateCount(0, TOTAL_CHECKS - 1, COUNT_MS);
+
+      setTimeout(function() {
+        showFlagged();
+        setTimeout(function() {
+          showSummary();
+          setTimeout(run, SUMMARY_MS);
+        }, PAUSE_MS);
+      }, SCROLL_MS + DISSECT_DELAY);
+    }, BOOT_MS);
+  }
+  run();
 })();
 </script>
